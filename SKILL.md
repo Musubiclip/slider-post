@@ -125,7 +125,7 @@ Use the exact same art style as the attached images. <The object> seen exactly f
 ### 3d. Generate the images with Codex
 
 ```bash
-<skill dir>/kit/gen_image.sh "<prompt>" <work folder>/raw/1-main.png <skill dir>/kit/style-ref.png
+bash <skill dir>/kit/gen_image.sh "<prompt>" <work folder>/raw/1-main.png <skill dir>/kit/style-ref.png
 ```
 
 It runs `codex exec` with its built in image generation, attaches the reference images, and saves one PNG (about a minute each). `kit/style-ref.png` is the house style reference, so every prompt gets it.
