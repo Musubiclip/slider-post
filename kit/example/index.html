@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Better Call Saul x Musubi</title>
+<script src="assets/vendor/gsap.min.js"></script>
+<style>
+  @font-face { font-family:"Inter"; src:url("assets/fonts/inter-var.woff2") format("woff2"); font-weight:100 900; font-display:block; }
+  @font-face { font-family:"Anton"; src:url("assets/fonts/Anton.woff2") format("woff2"); font-display:block; }
+  @font-face { font-family:"SG"; src:url("assets/fonts/SpaceGrotesk-500.woff2") format("woff2"); font-weight:500; font-display:block; }
+  @font-face { font-family:"SG"; src:url("assets/fonts/SpaceGrotesk-700.woff2") format("woff2"); font-weight:700; font-display:block; }
+  @font-face { font-family:"Marker"; src:url("assets/fonts/PermanentMarker.woff2") format("woff2"); font-display:block; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:1080px; height:1350px; overflow:hidden; background:#ffffff; }
+  #root { position:relative; width:1080px; height:1350px; overflow:hidden; color:#111111; font-family:SG, sans-serif; }
+  #strip { position:absolute; left:0; top:0; width:6480px; height:1350px; background:#ffffff; }
+  #strip > * { position:absolute; }
+  .grid { left:0; top:0; width:6480px; height:1172px; background-image:linear-gradient(rgba(67,136,255,.13) 2px, transparent 2px), linear-gradient(90deg, rgba(67,136,255,.13) 2px, transparent 2px); background-size:135px 135px; }
+  .road { left:0; top:1172px; width:6480px; height:500px; background:#00e751; border-top:7px solid #111111; }
+  .road i { position:absolute; left:0; right:0; top:96px; height:8px; background:repeating-linear-gradient(90deg, rgba(17,17,17,.28) 0 70px, transparent 70px 120px); }
+  .art { max-width:none; }
+  .spot { border-radius:50%; background:#4388ff; border:6px solid #111111; z-index:1; }
+  .hd { top:44px; display:flex; align-items:center; gap:14px; z-index:6; background:#fff; border:5px solid #111111; border-radius:999px; padding:10px 30px 10px 14px; box-shadow:6px 6px 0 #111111; }
+  .hd b { font:900 50px/1 Inter; letter-spacing:-.045em; color:#111111; }
+  .pg { top:66px; width:150px; text-align:right; font:700 34px/1 SG; color:#111111; z-index:6; }
+  .pg span { opacity:.55; }
+  h1 { font-family:Anton, sans-serif; font-weight:400; line-height:.98; color:#111111; letter-spacing:.005em; text-shadow:6px 6px 0 #4388ff; z-index:2; }
+  mark { background:#00e751; color:#111111; text-shadow:none; padding:0 .1em; margin:0 -.02em; border:5px solid #111111; box-shadow:6px 6px 0 #111111; display:inline-block; line-height:.98; transform:rotate(-1.5deg); margin-top:6px; margin-bottom:6px; }
+  .body { font:500 38px/1.28 SG; color:#111111; z-index:2; letter-spacing:-.005em; }
+  .body b { font-weight:700; }
+  .kick { display:flex; align-items:center; gap:10px; z-index:2; }
+  .kick b { font:400 70px/1 Anton; color:#111111; text-shadow:4px 4px 0 #4388ff; letter-spacing:.01em; }
+  .tile { position:relative; display:inline-block; width:92px; height:92px; background:#00e751; border:5px solid #111111; font:700 52px/84px SG; text-align:center; letter-spacing:-.03em; box-shadow:5px 5px 0 #111111; }
+  .tile i { position:absolute; left:6px; top:3px; font:700 17px/1 SG; font-style:normal; }
+  .note { background:#fff; border:5px solid #111111; border-radius:20px; padding:22px 26px; font:500 34px/1.25 SG; box-shadow:8px 8px 0 #111111; z-index:4; }
+  .note b { display:block; font-weight:700; }
+  .pill { background:#00e751; border:5px solid #111111; border-radius:999px; padding:14px 30px 13px; font:700 38px/1 SG; box-shadow:6px 6px 0 #111111; z-index:4; }
+  .lz { background:#111111; color:#fff; border-radius:999px; padding:12px 24px 10px; font:700 26px/1 SG; letter-spacing:.16em; z-index:2; }
+  .ghost { top:128px; width:500px; text-align:right; font:400 380px/1 Anton; color:rgba(67,136,255,.06); -webkit-text-stroke:4px rgba(67,136,255,.30); z-index:1; }
+  .board { width:500px; height:330px; background:#173d2a; border:14px solid #8a5a36; outline:5px solid #111111; border-radius:10px; padding:26px 30px; color:#f3efe9; z-index:2; box-shadow:10px 10px 0 #111111; }
+  .board div { font:400 56px/1 Marker; }
+  .board span { display:block; font:400 28px/1.3 Marker; opacity:.75; margin-top:10px; }
+  .board em { display:block; font:400 34px/1 Marker; font-style:normal; opacity:.55; margin-top:42px; letter-spacing:.06em; }
+  .trail { z-index:1; overflow:visible; }
+  .tag { width:330px; background:#fff; border:6px solid #111111; border-radius:18px; overflow:hidden; text-align:center; box-shadow:8px 8px 0 #111111; z-index:2; }
+  .tag .th { background:#111111; color:#fff; font:400 40px/1 Anton; letter-spacing:.14em; padding:12px 0 10px; }
+  .tag .tm { font:700 20px/1 SG; margin-top:12px; letter-spacing:.06em; }
+  .tag .tn { font:400 46px/1.3 Marker; padding:10px 10px 14px; }
+  .tag.old { transform:rotate(-8deg); opacity:.6; z-index:2; }
+  .tag.old .tn { text-decoration:line-through; text-decoration-thickness:6px; }
+  .tag.new { transform:rotate(5deg); z-index:3; }
+  .tag.new .th { background:#00e751; color:#111111; border-bottom:5px solid #111111; }
+  .chip { width:250px; background:#fff; border:6px solid #111111; border-radius:12px; padding:14px 14px 18px; transform:rotate(-5deg); box-shadow:8px 8px 0 #111111; z-index:3; }
+  .chip .sw2 { height:190px; background:#3fb4f0; border:4px solid #111111; border-radius:4px; margin-bottom:14px; }
+  .chip b { display:block; font:700 23px/1.1 SG; }
+  .chip span { display:block; font:500 19px/1.3 SG; opacity:.6; }
+  .scrawl { font:400 40px/1 Marker; color:#111111; z-index:5; }
+  .stamp { width:250px; height:250px; border-radius:50%; background:#00e751; border:8px solid #111111; text-align:center; font:400 72px/1 Anton; padding-top:60px; transform:rotate(-12deg); box-shadow:0 0 0 8px #fff, 0 0 0 13px #111111, 10px 12px 0 13px #111111; z-index:5; }
+  .stamp span { display:block; font:700 34px/1 SG; letter-spacing:.3em; margin-top:6px; padding-left:.3em; }
+  .say { font:400 64px/1 Marker; color:#2563d6; text-shadow:none; transform:rotate(-3deg); z-index:2; }
+  .card { width:540px; background:#fff; border:6px solid #111111; border-radius:30px; padding:32px 34px 34px; box-shadow:14px 14px 0 #111111; z-index:4; font-family:SG; }
+  .ch { display:flex; align-items:center; gap:12px; }
+  .ch b { font:800 36px/1 Inter; letter-spacing:-.03em; }
+  .ch span { margin-left:auto; font:500 22px/1 SG; opacity:.6; }
+  .ct { font:700 32px/1.15 SG; letter-spacing:-.02em; margin:24px 0 6px; }
+  .cr { display:flex; justify-content:space-between; font:500 24px/1 SG; border-top:3px solid #ececec; padding:19px 0; }
+  .cr span { opacity:.62; }
+  .cr b { font-weight:700; }
+  .cb { margin-top:8px; background:#00e751; border:5px solid #111111; border-radius:16px; text-align:center; font:700 32px/1 SG; padding:22px 0; box-shadow:6px 6px 0 #111111; }
+  .sw { top:1266px; background:#111111; color:#fff; border-radius:999px; padding:16px 28px 14px; font:700 30px/1 SG; letter-spacing:.08em; z-index:6; }
+  .url { top:1244px; display:flex; align-items:center; gap:14px; font:700 38px/1 SG; z-index:6; background:#00e751; padding:10px 18px 10px 0; }
+
+  .lp { background:#fde88b; background-image:linear-gradient(90deg, transparent 58px, rgba(216,31,38,.55) 58px 61px, transparent 61px), repeating-linear-gradient(transparent 0 43px, rgba(67,136,255,.38) 43px 45px); border:5px solid #111111; padding:20px 24px 22px 80px; box-shadow:8px 8px 0 #111111; }
+  .lp .lt { font:400 40px/1.1 Marker; color:#d81f26; margin-bottom:6px; }
+  .lp .ll { font:400 32px/1.4 Marker; }
+  .lp .ll i { font-style:normal; display:inline-block; width:42px; height:42px; border:3px solid #d81f26; border-radius:50%; text-align:center; line-height:38px; font-size:24px; margin-right:12px; color:#d81f26; }
+  .lp .lx { font:400 44px/1.3 Marker; }
+  .lp .lx s { text-decoration-color:#d81f26; text-decoration-thickness:6px; opacity:.6; }
+  .lp .lq { font:400 32px/1.3 Marker; }
+  .lp u { text-decoration-color:#d81f26; text-decoration-thickness:4px; }
+  .circ { border:4px solid #d81f26; border-radius:50%; padding:0 12px; }
+  .bcard { width:200px; text-align:center; z-index:4; }
+  .bcard b { display:block; font:400 20px/1 Anton; letter-spacing:.02em; color:#111111; }
+  .bcard span { display:block; font:700 15px/1 SG; letter-spacing:.2em; margin-top:8px; color:#d81f26; }
+  .bcard i { display:block; font:400 13px/1 Marker; font-style:normal; margin-top:7px; color:#2563d6; }
+  .news { width:330px; background:#f4f1ea; border:5px solid #111111; padding:16px 18px 20px; transform:rotate(6deg); box-shadow:8px 8px 0 #111111; z-index:4; }
+  .news .nm { font:400 30px/1 Anton; letter-spacing:.06em; text-align:center; border-bottom:4px double #111111; padding-bottom:8px; }
+  .news .nh { font:400 50px/1 Anton; margin-top:12px; }
+  .news .nr i { display:block; height:8px; background:rgba(17,17,17,.2); margin-top:12px; }
+  .news .nr i:nth-child(2n) { width:78%; }
+  .balls { display:flex; gap:18px; z-index:4; }
+  .balls i { width:110px; height:110px; border-radius:50%; background:#4388ff; border:5px solid #111111; box-shadow:5px 5px 0 #111111; font-style:normal; text-align:center; color:#fff; font:700 26px/1 SG; padding-top:18px; }
+  .balls i b { display:block; font:400 46px/1 Anton; margin-top:4px; }
+  .balls i.g { background:#00e751; color:#111111; } .balls i.r { background:#d81f26; }
+
+  .ph { background:#f5b700; color:#111111; border:4px solid #111111; border-radius:999px; padding:10px 22px 8px; font:700 26px/1 SG; letter-spacing:.16em; box-shadow:4px 4px 0 #111111; z-index:2; }
+  .chalk { background:#23272b; border:10px solid #8a5a36; outline:5px solid #111111; border-radius:10px; padding:22px 28px 20px; color:#f3efe9; box-shadow:10px 10px 0 #111111; z-index:4; }
+  .chalk .ct { font:400 44px/1 Marker; color:#ffd23f; margin-bottom:12px; letter-spacing:.04em; }
+  .chalk .cl { font:400 34px/1.35 Marker; }
+  .chalk .cl i { font-style:normal; display:inline-block; width:44px; height:44px; border:3px solid #f3efe9; border-radius:50%; text-align:center; line-height:40px; font-size:26px; margin-right:14px; }
+  .chalk .cr2 { display:flex; align-items:center; gap:16px; font:400 34px/1.3 Marker; }
+  .chalk .cr2 s { opacity:.55; text-decoration-thickness:4px; text-decoration-color:#d81f26; width:150px; }
+  .chalk .cr2 em { font-style:normal; color:#ffd23f; }
+  .chalk .cr2 b { font-weight:400; color:#00e751; }
+  .chalk .cf { font:400 30px/1.2 Marker; color:#ffd23f; margin-top:10px; }
+  .stamp2 { width:250px; height:250px; border-radius:50%; background:#d81f26; color:#fff; border:8px solid #111111; text-align:center; font:400 70px/1 Anton; padding-top:66px; transform:rotate(-12deg); box-shadow:0 0 0 8px #fff, 0 0 0 13px #111111, 10px 12px 0 13px #111111; z-index:6; }
+  .stamp2 span { display:block; font:700 24px/1 SG; letter-spacing:.14em; margin-top:10px; }
+  .ct2 { font:700 32px/1.15 SG; letter-spacing:-.02em; margin:24px 0 6px; }
+</style></head><body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="6" data-width="1080" data-height="1350">
+  <section class="clip" style="position:absolute;inset:0" data-layout-allow-overflow="true">
+    <div id="strip" data-layout-allow-overlap="true" data-layout-allow-occlusion="true">
+      <div class="grid"></div>
+      <div class="road"><i></i></div>
+      <div class="hd" style="left:60px"><svg viewBox="-1.6964 -1.6964 3.3928 3.3928" fill="none" aria-hidden="true" style="width:58px;height:58px"><defs><mask id="kh0-c" maskUnits="userSpaceOnUse" x="-1.6964" y="-1.6964" width="3.3928" height="3.3928"><rect x="-1.6964" y="-1.6964" width="3.3928" height="3.3928" fill="#fff"/><path d="M-0.1613 1.2361A1 1 0 0 1 -0.3992 -0.1326" stroke="#000" stroke-width="0.8214"/></mask><mask id="kh0-r" maskUnits="userSpaceOnUse" x="-1.6964" y="-1.6964" width="3.3928" height="3.3928"><rect x="-1.6964" y="-1.6964" width="3.3928" height="3.3928" fill="#fff"/><path d="M0.1613 -1.2361A1 1 0 0 1 0.3992 0.1326" stroke="#000" stroke-width="0.8214"/></mask></defs><path pathLength="1" d="M-0.6875 -1.3945A1 1 0 1 1 -1.3945 -0.6873" stroke="#4388ff" stroke-width="0.5357" stroke-linecap="round" mask="url(#kh0-c)"/><path pathLength="1" d="M0.6875 1.3945A1 1 0 1 1 1.3945 0.6873" stroke="#00e751" stroke-width="0.5357" stroke-linecap="round" mask="url(#kh0-r)"/></svg><b>Musubi</b></div>
+      <div class="pg" style="left:860px">01<span>/06</span></div>
+      <div class="sw" style="left:790px">SWIPE &rarr;</div>
+      <div class="say" style="left:72px;top:160px;font-size:54px">Better Call Musubi</div>
+      <h1 style="left:72px;top:246px;width:560px;font-size:96px">HE COULDN&rsquo;T AFFORD ADS. SO HE BECAME <mark>THE STORY.</mark></h1>
+      <div class="body" style="left:72px;top:668px;width:420px;font-size:28px">The best marketer on TV wasn&rsquo;t in advertising. He was a lawyer with an office in a nail salon. <b>4 exhibits from Jimmy McGill for your brand.</b></div>
+      <div class="lp" style="left:72px;top:866px;width:440px;transform:rotate(-2deg);z-index:4"><div class="lt">THE CASE FILE</div><div class="ll"><i>A</i>A catchy name</div><div class="ll"><i>B</i>Be the news</div><div class="ll"><i>C</i>Go to them</div><div class="ll"><i>D</i>Right crowd</div></div>
+      <div class="spot" style="left:520px;top:460px;width:560px;height:560px"></div>
+      <img class="art" src="assets/cut/saul.png" alt="" style="left:582px;top:330px;width:435px;height:860px;z-index:3;transform:rotate(0deg)">
+      <div class="hd" style="left:1140px"><svg viewBox="-1.6964 -1.6964 3.3928 3.3928" fill="none" aria-hidden="true" style="width:58px;height:58px"><defs><mask id="kh1-c" maskUnits="userSpaceOnUse" x="-1.6964" y="-1.6964" width="3.3928" height="3.3928"><rect x="-1.6964" y="-1.6964" width="3.3928" height="3.3928" fill="#fff"/><path d="M-0.1613 1.2361A1 1 0 0 1 -0.3992 -0.1326" stroke="#000" stroke-width="0.8214"/></mask><mask id="kh1-r" maskUnits="userSpaceOnUse" x="-1.6964" y="-1.6964" width="3.3928" height="3.3928"><rect x="-1.6964" y="-1.6964" width="3.3928" height="3.3928" fill="#fff"/><path d="M0.1613 -1.2361A1 1 0 0 1 0.3992 0.1326" stroke="#000" stroke-width="0.8214"/></mask></defs><path pathLength="1" d="M-0.6875 -1.3945A1 1 0 1 1 -1.3945 -0.6873" stroke="#4388ff" stroke-width="0.5357" stroke-linecap="round" mask="url(#kh1-c)"/><path pathLength="1" d="M0.6875 1.3945A1 1 0 1 1 1.3945 0.6873" stroke="#00e751" stroke-width="0.5357" stroke-linecap="round" mask="url(#kh1-r)"/></svg><b>Musubi</b></div>
+      <div class="pg" style="left:1940px">02<span>/06</span></div>
+      <div class="sw" style="left:1870px">SWIPE &rarr;</div>
+      <div class="ph" style="left:1152px;top:150px">EXHIBIT A</div>
+      <div class="ghost" style="left:1640px">A</div>
+      <h1 style="left:1152px;top:226px;width:940px;font-size:108px">PICK A NAME PEOPLE <mark>CAN&rsquo;T FORGET.</mark></h1>
+      <div class="body" style="left:1152px;top:486px;width:480px;font-size:30px">Jimmy McGill was a name you forget. So he became <b>Saul Goodman.</b> Say it fast: <b>&ldquo;S&rsquo;all good, man.&rdquo;</b> A name that&rsquo;s a line people repeat does your marketing for free.</div>
+      <div class="lp" style="left:1152px;top:830px;width:440px;transform:rotate(2deg);z-index:4"><div class="lx" style="font-size:38px"><s>JIMMY McGILL</s></div><div class="lx" style="font-size:38px">SAUL GOODMAN</div><div class="lq">= &ldquo;S&rsquo;all good, man.&rdquo;</div></div>
+      <div class="spot" style="left:1615px;top:695px;width:330px;height:330px"></div>
+      <img class="art" src="assets/cut/card.png" alt="" style="left:1600px;top:490px;width:359px;height:700px;z-index:3;transform:rotate(0deg)">
+      <div class="bcard" style="left:1742px;top:561px;transform:rotate(-6deg)"><b>SAUL GOODMAN</b><i>S&rsquo;all good, man!</i></div>
+      <img class="art" src="assets/cut/billboard.png" alt="" style="left:1838px;top:660px;width:983px;height:720px;z-index:5;transform:rotate(0deg)">
+      <div class="hd" style="left:2220px"><svg viewBox="-1.6964 -1.6964 3.3928 3.3928" fill="none" aria-hidden="true" style="width:58px;height:58px"><defs><mask id="kh2-c" maskUnits="userSpaceOnUse" x="-1.6964" y="-1.6964" width="3.3928" height="3.3928"><rect x="-1.6964" y="-1.6964" width="3.3928" height="3.3928" fill="#fff"/><path d="M-0.1613 1.2361A1 1 0 0 1 -0.3992 -0.1326" stroke="#000" stroke-width="0.8214"/></mask><mask id="kh2-r" maskUnits="userSpaceOnUse" x="-1.6964" y="-1.6964" width="3.3928" height="3.3928"><rect x="-1.6964" y="-1.6964" width="3.3928" height="3.3928" fill="#fff"/><path d="M0.1613 -1.2361A1 1 0 0 1 0.3992 0.1326" stroke="#000" stroke-width="0.8214"/></mask></defs><path pathLength="1" d="M-0.6875 -1.3945A1 1 0 1 1 -1.3945 -0.6873" stroke="#4388ff" stroke-width="0.5357" stroke-linecap="round" mask="url(#kh2-c)"/><path pathLength="1" d="M0.6875 1.3945A1 1 0 1 1 1.3945 0.6873" stroke="#00e751" stroke-width="0.5357" stroke-linecap="round" mask="url(#kh2-r)"/></svg><b>Musubi</b></div>
+      <div class="pg" style="left:3020px">03<span>/06</span></div>
+      <div class="sw" style="left:2950px">SWIPE &rarr;</div>
+      <div class="ph" style="left:2232px;top:150px">EXHIBIT B</div>
+      <div class="ghost" style="left:2720px">B</div>
+      <h1 style="left:2232px;top:226px;width:940px;font-size:104px">DON&rsquo;T BUY THE AD. <mark>BE THE NEWS.</mark></h1>
+      <div class="body" style="left:2232px;top:466px;width:936px;font-size:27px">A judge ordered Jimmy&rsquo;s billboard taken down. So he paid two film students to shoot it coming down, and on camera, a worker slipped off the edge. Jimmy climbed up and &ldquo;saved&rdquo; him. <b>(The whole thing was staged.)</b> Next day, he was the hero on the front page. <b>People share stories. Nobody shares an ad.</b></div>
+      <div class="news" style="left:2860px;top:748px"><div class="nm">THE DAILY NEWS</div><div class="nh">LOCAL LAWYER SAVES WORKER</div><div class="nr"><i></i><i></i><i></i><i></i></div></div>
+      <div class="lp" style="left:2850px;top:1040px;width:350px;transform:rotate(3deg);z-index:6"><div class="lq" style="font-size:26px">Staged? Don&rsquo;t copy that part. Copy the idea: <u>a moment worth sharing.</u></div></div>
+      <div class="hd" style="left:3300px"><svg viewBox="-1.6964 -1.6964 3.3928 3.3928" fill="none" aria-hidden="true" style="width:58px;height:58px"><defs><mask id="kh3-c" maskUnits="userSpaceOnUse" x="-1.6964" y="-1.6964" width="3.3928" height="3.3928"><rect x="-1.6964" y="-1.6964" width="3.3928" height="3.3928" fill="#fff"/><path d="M-0.1613 1.2361A1 1 0 0 1 -0.3992 -0.1326" stroke="#000" stroke-width="0.8214"/></mask><mask id="kh3-r" maskUnits="userSpaceOnUse" x="-1.6964" y="-1.6964" width="3.3928" height="3.3928"><rect x="-1.6964" y="-1.6964" width="3.3928" height="3.3928" fill="#fff"/><path d="M0.1613 -1.2361A1 1 0 0 1 0.3992 0.1326" stroke="#000" stroke-width="0.8214"/></mask></defs><path pathLength="1" d="M-0.6875 -1.3945A1 1 0 1 1 -1.3945 -0.6873" stroke="#4388ff" stroke-width="0.5357" stroke-linecap="round" mask="url(#kh3-c)"/><path pathLength="1" d="M0.6875 1.3945A1 1 0 1 1 1.3945 0.6873" stroke="#00e751" stroke-width="0.5357" stroke-linecap="round" mask="url(#kh3-r)"/></svg><b>Musubi</b></div>
+      <div class="pg" style="left:4100px">04<span>/06</span></div>
+      <div class="sw" style="left:4030px">SWIPE &rarr;</div>
+      <div class="ph" style="left:3312px;top:150px">EXHIBIT C</div>
+      <div class="ghost" style="left:3800px">C</div>
+      <h1 style="left:3312px;top:226px;width:940px;font-size:104px">GO WHERE YOUR PEOPLE <mark>ALREADY ARE.</mark></h1>
+      <div class="body" style="left:3312px;top:480px;width:936px;font-size:29px">Jimmy wanted elderly clients. He didn&rsquo;t wait for them. He went to them. He called bingo at the retirement home and handed out gelatin cups with his slogan printed on the bottom. <b>Your customers are scrolling Reels right now. That&rsquo;s the retirement home. Show up there.</b></div>
+      <div class="spot" style="left:3340px;top:740px;width:380px;height:380px"></div>
+      <img class="art" src="assets/cut/bingo.png" alt="" style="left:3365px;top:630px;width:349px;height:560px;z-index:3;transform:rotate(0deg)">
+      <div class="balls" style="left:3860px;top:736px"><i>B<b>4</b></i><i class="g">I<b>17</b></i><i class="r">G<b>52</b></i></div>
+      <div class="lp" style="left:3830px;top:880px;width:420px;transform:rotate(-3deg);z-index:4"><div class="lt" style="font-size:30px">printed on every cup:</div><div class="lx" style="font-size:44px;color:#d81f26">&ldquo;NEED A WILL, CALL McGILL!&rdquo;</div></div>
+      <div class="hd" style="left:4380px"><svg viewBox="-1.6964 -1.6964 3.3928 3.3928" fill="none" aria-hidden="true" style="width:58px;height:58px"><defs><mask id="kh4-c" maskUnits="userSpaceOnUse" x="-1.6964" y="-1.6964" width="3.3928" height="3.3928"><rect x="-1.6964" y="-1.6964" width="3.3928" height="3.3928" fill="#fff"/><path d="M-0.1613 1.2361A1 1 0 0 1 -0.3992 -0.1326" stroke="#000" stroke-width="0.8214"/></mask><mask id="kh4-r" maskUnits="userSpaceOnUse" x="-1.6964" y="-1.6964" width="3.3928" height="3.3928"><rect x="-1.6964" y="-1.6964" width="3.3928" height="3.3928" fill="#fff"/><path d="M0.1613 -1.2361A1 1 0 0 1 0.3992 0.1326" stroke="#000" stroke-width="0.8214"/></mask></defs><path pathLength="1" d="M-0.6875 -1.3945A1 1 0 1 1 -1.3945 -0.6873" stroke="#4388ff" stroke-width="0.5357" stroke-linecap="round" mask="url(#kh4-c)"/><path pathLength="1" d="M0.6875 1.3945A1 1 0 1 1 1.3945 0.6873" stroke="#00e751" stroke-width="0.5357" stroke-linecap="round" mask="url(#kh4-r)"/></svg><b>Musubi</b></div>
+      <div class="pg" style="left:5180px">05<span>/06</span></div>
+      <div class="sw" style="left:5110px">SWIPE &rarr;</div>
+      <div class="ph" style="left:4392px;top:150px">EXHIBIT D</div>
+      <div class="ghost" style="left:4880px">D</div>
+      <h1 style="left:4392px;top:226px;width:940px;font-size:108px">SMALL BUDGET. <mark>RIGHT CROWD.</mark></h1>
+      <div class="body" style="left:4392px;top:486px;width:936px;font-size:29px">His law firm said no to TV. Jimmy shot a homemade commercial anyway, with two film students, and aired it in one small market where his audience actually watched. <b>Over a hundred new clients signed up in a single day. You don&rsquo;t need a big production. You need the right eyeballs.</b></div>
+      <div class="spot" style="left:4410px;top:800px;width:320px;height:320px"></div>
+      <img class="art" src="assets/cut/camera.png" alt="" style="left:4422px;top:710px;width:295px;height:480px;z-index:3;transform:rotate(0deg)">
+      <div class="lp" style="left:4820px;top:700px;width:520px;transform:rotate(-2deg);z-index:7"><div class="lx" style="font-size:33px">Cost: almost nothing.</div><div class="lx" style="font-size:33px">Result: <span class="circ">100+ in 1 day.</span></div></div>
+      <img class="art" src="assets/cut/car.png" alt="" style="left:4966px;top:852px;width:827px;height:350px;z-index:6;transform:rotate(0deg)">
+      <div class="hd" style="left:5460px"><svg viewBox="-1.6964 -1.6964 3.3928 3.3928" fill="none" aria-hidden="true" style="width:58px;height:58px"><defs><mask id="kh5-c" maskUnits="userSpaceOnUse" x="-1.6964" y="-1.6964" width="3.3928" height="3.3928"><rect x="-1.6964" y="-1.6964" width="3.3928" height="3.3928" fill="#fff"/><path d="M-0.1613 1.2361A1 1 0 0 1 -0.3992 -0.1326" stroke="#000" stroke-width="0.8214"/></mask><mask id="kh5-r" maskUnits="userSpaceOnUse" x="-1.6964" y="-1.6964" width="3.3928" height="3.3928"><rect x="-1.6964" y="-1.6964" width="3.3928" height="3.3928" fill="#fff"/><path d="M0.1613 -1.2361A1 1 0 0 1 0.3992 0.1326" stroke="#000" stroke-width="0.8214"/></mask></defs><path pathLength="1" d="M-0.6875 -1.3945A1 1 0 1 1 -1.3945 -0.6873" stroke="#4388ff" stroke-width="0.5357" stroke-linecap="round" mask="url(#kh5-c)"/><path pathLength="1" d="M0.6875 1.3945A1 1 0 1 1 1.3945 0.6873" stroke="#00e751" stroke-width="0.5357" stroke-linecap="round" mask="url(#kh5-r)"/></svg><b>Musubi</b></div>
+      <div class="pg" style="left:6260px">06<span>/06</span></div>
+      <div class="say" style="left:5472px;top:156px;font-size:52px">S&rsquo;all good, man.</div>
+      <h1 style="left:5472px;top:252px;width:940px;font-size:104px">DON&rsquo;T CALL SAUL. <mark>CALL MUSUBI.</mark></h1>
+      <div class="body" style="left:5472px;top:500px;width:930px;font-size:31px">Put your brand&rsquo;s best 30 seconds on Musubi. 5,000+ creators across India turn it into clips on Reels and Shorts, right where your customers already are. <b>Your budget only pays out for verified views.</b></div>
+      <div class="card" style="left:5880px;top:720px"><div class="ch"><svg viewBox="-1.6964 -1.6964 3.3928 3.3928" fill="none" aria-hidden="true" style="width:44px;height:44px"><defs><mask id="cardk-c" maskUnits="userSpaceOnUse" x="-1.6964" y="-1.6964" width="3.3928" height="3.3928"><rect x="-1.6964" y="-1.6964" width="3.3928" height="3.3928" fill="#fff"/><path d="M-0.1613 1.2361A1 1 0 0 1 -0.3992 -0.1326" stroke="#000" stroke-width="0.8214"/></mask><mask id="cardk-r" maskUnits="userSpaceOnUse" x="-1.6964" y="-1.6964" width="3.3928" height="3.3928"><rect x="-1.6964" y="-1.6964" width="3.3928" height="3.3928" fill="#fff"/><path d="M0.1613 -1.2361A1 1 0 0 1 0.3992 0.1326" stroke="#000" stroke-width="0.8214"/></mask></defs><path pathLength="1" d="M-0.6875 -1.3945A1 1 0 1 1 -1.3945 -0.6873" stroke="#4388ff" stroke-width="0.5357" stroke-linecap="round" mask="url(#cardk-c)"/><path pathLength="1" d="M0.6875 1.3945A1 1 0 1 1 1.3945 0.6873" stroke="#00e751" stroke-width="0.5357" stroke-linecap="round" mask="url(#cardk-r)"/></svg><b>Musubi</b><span>New campaign</span></div><div class="ct2">Your best 30 seconds</div><div class="cr"><span>Budget pays out for</span><b>Verified views</b></div><div class="cr"><span>Your crowd</span><b>5,000+ creators</b></div><div class="cb">Launch campaign &rarr;</div></div>
+      <div class="url" style="left:5472px"><b>musubiclip.com</b></div>
+    </div>
+  </section>
+</div>
+<script>
+  var tl = gsap.timeline({ paused: true });
+  for (var i = 0; i < 6; i++) tl.set("#strip", { x: -1080 * i }, i === 0 ? 0.001 : i);
+  window.__timelines = { main: tl };
+</script>
+</body></html>
