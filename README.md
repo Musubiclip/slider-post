@@ -5,7 +5,7 @@ A Claude Code skill. Type a movie or series name and get a 6 slide Instagram car
 ## Install
 
 ```bash
-npx skills add Musubiclip/musubi-slider-post
+npx skills add Musubiclip/slider-post
 ```
 
 ## Use
